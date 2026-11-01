@@ -3,7 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package EDD;
-
+// creada por moises
 /**
  * Implementación de una Tabla Hash con encadenamiento separado.
  * Permite almacenar e indexar objetos por clave con complejidad O(1) promedio.
