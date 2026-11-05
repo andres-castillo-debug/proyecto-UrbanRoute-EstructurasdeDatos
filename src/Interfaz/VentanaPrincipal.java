@@ -418,7 +418,15 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         lblStats.setText("Estaciones: " + grafo.getNumEstaciones() + 
                         " | Conexiones: " + grafo.getNumAristas());
     }
-    
+
+    private void btnCargarEstacionesActionPerformed(java.awt.event.ActionEvent evt) {                                                    
+            if (GestorArchivo.cargarEstaciones(grafo, this)) {
+            actualizarListaEstaciones();
+            actualizarCombos();
+            actualizarInfo();
+            txtResultados1.append("Estaciones cargadas.\n");
+        }
+    }    
                          
 
     /**
