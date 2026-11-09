@@ -419,6 +419,10 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                         " | Conexiones: " + grafo.getNumAristas());
     }
 
+    /**
+    * Maneja la acción de cargar estaciones desde archivo.
+    * @param evt Evento de acción
+    */
     private void btnCargarEstacionesActionPerformed(java.awt.event.ActionEvent evt) {                                                    
             if (GestorArchivo.cargarEstaciones(grafo, this)) {
             actualizarListaEstaciones();
@@ -426,7 +430,72 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             actualizarInfo();
             txtResultados1.append("Estaciones cargadas.\n");
         }
-    }    
+    }  
+
+    /**
+    * Maneja la acción de limpiar el área de resultados.
+    * @param evt Evento de acción
+    */
+    private void btnLimpiarActionPerformed(java.awt.event.ActionEvent evt) {                                           
+        txtResultados1.setText("");
+    }                                          
+
+    /**
+    * Maneja la acción de mostrar el grafo visualmente con GraphStream.
+    * @param evt Evento de acción
+    */
+    private void btnMostrarGrafoActionPerformed(java.awt.event.ActionEvent evt) {                                                
+        if (grafo.getNumEstaciones() == 0) {
+            javax.swing.JOptionPane.showMessageDialog(this, "No hay estaciones para mostrar");
+            return;
+        }
+
+        try {
+            System.setProperty("org.graphstream.ui", "swing");
+
+            javax.swing.JFrame frame = new javax.swing.JFrame("UrbanRoute - Visualización");
+            frame.setSize(900, 700);
+            frame.setLocationRelativeTo(this);
+
+            org.graphstream.graph.Graph g = new org.graphstream.graph.implementations.MultiGraph("UrbanRoute");
+            g.setAttribute("ui.stylesheet", 
+                "node { size: 25px; fill-color: #4A90D9; text-mode: normal; text-color: black; " +
+                "text-size: 10; text-alignment: under; } " +
+                "node.hub { fill-color: red; size: 35px; } " +
+                "edge { fill-color: gray; size: 1px; text-size: 9; text-color: blue; }");
+
+            EDD.Lista<EDD.Estacion> estaciones = grafo.getTodasEstaciones();
+            for (int i = 0; i < estaciones.getTamaño(); i++) {
+                EDD.Estacion e = estaciones.obtener(i);
+                org.graphstream.graph.Node n = g.addNode(e.getId());
+                n.setAttribute("ui.label", e.getId());
+                if (e.getGrado() >= 4) n.setAttribute("ui.class", "hub");
+            }
+
+            EDD.Lista<EDD.Arista> aristas = grafo.getAristas();
+            for (int i = 0; i < aristas.getTamaño(); i++) {
+                EDD.Arista a = aristas.obtener(i);
+                String id = a.getOrigen().getId() + "-" + a.getDestino().getId();
+                org.graphstream.graph.Edge edge = g.addEdge(id, a.getOrigen().getId(), 
+                    a.getDestino().getId(), false);
+                edge.setAttribute("ui.label", String.valueOf(a.getTiempo()));
+            }
+
+            org.graphstream.ui.view.Viewer viewer = new org.graphstream.ui.swing_viewer.SwingViewer(
+                g, org.graphstream.ui.view.Viewer.ThreadingModel.GRAPH_IN_ANOTHER_THREAD);
+            org.graphstream.ui.swing_viewer.ViewPanel vp = 
+                (org.graphstream.ui.swing_viewer.ViewPanel) viewer.addDefaultView(false);
+
+            frame.add(vp);
+            frame.setVisible(true);
+
+        } catch (Exception ex) {
+            javax.swing.JOptionPane.showMessageDialog(this, 
+                "Error al mostrar grafo: " + ex.getMessage() + 
+                "\nAsegúrate de tener GraphStream en las librerías.", 
+                "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
+        }
+    } 
                          
 
     /**
