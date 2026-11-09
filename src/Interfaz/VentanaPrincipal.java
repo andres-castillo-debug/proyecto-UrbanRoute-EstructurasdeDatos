@@ -496,6 +496,22 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                 "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
         }
     } 
+
+    /**
+    * Maneja la acción de identificar hubs.
+    * @param evt Evento de acción
+    */
+    private void btnHubsActionPerformed(java.awt.event.ActionEvent evt) {                                        
+        txtResultados1.append("\nHUBS DE TRANSFERENCIA (TOP 10)\n");
+    
+        EDD.Lista<EDD.Estacion> hubs = grafo.identificarHubs(10);
+        for (int i = 0; i < hubs.getTamaño(); i++) {
+            EDD.Estacion e = hubs.obtener(i);
+            txtResultados1.append((i+1) + ". " + e.getId() + " - " + e.getNombre() + 
+                " (" + e.getGrado() + " conexiones, " + e.getLinea() + ")\n");
+        }
+        txtResultados1.append("\n");
+    }
                          
 
     /**
