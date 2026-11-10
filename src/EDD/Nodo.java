@@ -6,6 +6,7 @@ package EDD;
  * 
  * @param <T> Tipo de dato almacenado en el nodo
  * @version 1.0
+ * @author Jesus
  */
 public class Nodo<T> {
     private T dato;
