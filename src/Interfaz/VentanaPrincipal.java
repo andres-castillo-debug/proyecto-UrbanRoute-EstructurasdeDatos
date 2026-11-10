@@ -512,6 +512,63 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         }
         txtResultados1.append("\n");
     }
+
+    /**
+    * Maneja la acción de cargar conexiones desde archivo.
+    * @param evt Evento de acción
+    */
+    private void btnCargarConexionesActionPerformed(java.awt.event.ActionEvent evt) {                                                    
+        if (GestorArchivo.cargarConexiones(grafo, this)) {
+            actualizarInfo();
+            txtResultados1.append("Conexiones cargadas.\n");
+        }
+    }                                                   
+
+    /**
+    * Maneja la acción de agregar una estación.
+    * @param evt Evento de acción
+    */
+    private void btnAgregarEstacionActionPerformed(java.awt.event.ActionEvent evt) {                                                   
+        javax.swing.JTextField txtId = new javax.swing.JTextField();
+        javax.swing.JTextField txtNombre = new javax.swing.JTextField();
+        javax.swing.JTextField txtLinea = new javax.swing.JTextField("Linea 1");
+        javax.swing.JTextField txtZona = new javax.swing.JTextField();
+        javax.swing.JTextField txtCap = new javax.swing.JTextField("10000");
+
+        javax.swing.JPanel panel = new javax.swing.JPanel(new java.awt.GridLayout(5, 2, 5, 5));
+        panel.add(new javax.swing.JLabel("ID:"));
+        panel.add(txtId);
+        panel.add(new javax.swing.JLabel("Nombre:"));
+        panel.add(txtNombre);
+        panel.add(new javax.swing.JLabel("Línea:"));
+        panel.add(txtLinea);
+        panel.add(new javax.swing.JLabel("Zona:"));
+        panel.add(txtZona);
+        panel.add(new javax.swing.JLabel("Capacidad:"));
+        panel.add(txtCap);
+
+        int r = javax.swing.JOptionPane.showConfirmDialog(this, panel, 
+            "Agregar Estación", javax.swing.JOptionPane.OK_CANCEL_OPTION);
+
+        if (r == javax.swing.JOptionPane.OK_OPTION) {
+            try {
+                String id = txtId.getText().trim();
+                if (grafo.agregarEstacion(id, txtNombre.getText().trim(), 
+                    txtLinea.getText().trim(), txtZona.getText().trim(),
+                    Integer.parseInt(txtCap.getText().trim()))) {
+                    GestorArchivo.marcarCambios();
+                    actualizarListaEstaciones();
+                    actualizarCombos();
+                    actualizarInfo();
+                    txtResultados1.append("Estación agregada: " + id + "\n");
+                } else {
+                    javax.swing.JOptionPane.showMessageDialog(this, "La estación ya existe");
+                }
+            } catch (NumberFormatException e) {
+                javax.swing.JOptionPane.showMessageDialog(this, "Capacidad inválida");
+            }
+        }
+    }
                          
 
     /**
