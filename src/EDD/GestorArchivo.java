@@ -8,6 +8,7 @@ import java.io.*;
  * Controlador para la carga y guardado de archivos CSV.
  * Utiliza JFileChooser para la selección de archivos.
  * @version 1.0
+ * @author Jesus
  */
 public class GestorArchivo {
     private static File ultimoArchivoEstaciones;
