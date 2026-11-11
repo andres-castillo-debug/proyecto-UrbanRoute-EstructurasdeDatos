@@ -3,7 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package EDD;
-// creada por moises 
+
 /**
  * Grafo no dirigido ponderado que representa la red de transporte multimodal.
  * Utiliza una Tabla Hash para indexar estaciones y una lista de adyacencia para las conexiones.
