@@ -7,15 +7,9 @@ package EDD;
 /**
  * Representa una estación de la red de transporte multimodal.
  * Cada estación tiene un identificador único, nombre, línea, zona y capacidad.
- */
-
-
-/**
- *
- * @author Andre
+ * @version 1.0
  */
 public class Estacion {
-    
     private String id;
     private String nombre;
     private String linea;
@@ -31,7 +25,7 @@ public class Estacion {
      * @param nombre Nombre de la estación
      * @param linea Línea de transporte
      * @param zona Zona geográfica
-     * @param capacidad Capacidad de pasajeros por hora 
+     * @param capacidad Capacidad de pasajeros por hora
      */
     public Estacion(String id, String nombre, String linea, String zona, int capacidad) {
         this.id = id;
@@ -53,7 +47,7 @@ public class Estacion {
     
     /**
      * Obtiene el nombre de la estación.
-     * * @return Nombre de la estación
+     * @return Nombre de la estación
      */
     public String getNombre() { 
         return nombre; 
@@ -85,7 +79,7 @@ public class Estacion {
     
     /**
      * Obtiene la lista de aristas de la estación.
-     * * @return Lista de aristas
+     * @return Lista de aristas
      */
     public Lista<Arista> getAristas() { 
         return aristas; 
@@ -109,7 +103,7 @@ public class Estacion {
     
     /**
      * Agrega una arista a la estación.
-     *  @param a Arista a agregar
+     * @param a Arista a agregar
      */
     public void agregarArista(Arista a) {
         if (!aristas.contiene(a)) aristas.agregar(a);
