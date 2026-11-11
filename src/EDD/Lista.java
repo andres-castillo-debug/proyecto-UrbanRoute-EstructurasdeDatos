@@ -11,7 +11,6 @@ package EDD;
  * @param <T> Tipo de elementos almacenados en la lista
  * @author Equipo UrbanRoute
  * @version 1.0
- * @author Jesus
  */
 public class Lista<T> {
     private Nodo<T> cabeza;
@@ -240,3 +239,4 @@ public class Lista<T> {
         return sb.append("]").toString();
     }
 }
+
