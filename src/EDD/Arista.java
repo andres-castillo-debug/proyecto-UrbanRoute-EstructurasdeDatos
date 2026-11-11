@@ -20,13 +20,13 @@ public class Arista {
     private double tiempo;
     private boolean activa;
     
-    /*
-    constructor de la clase Arista.
-     *@param origen Estación de origen
+   /**
+     * Constructor de la clase Arista.
+     * 
+     * @param origen Estación de origen
      * @param destino Estación de destino
      * @param tiempo Tiempo de traslado en minutos
-
-    */
+     */
     
     public Arista(Estacion origen,Estacion destino,double tiempo){
         this.origen = origen;
@@ -35,16 +35,18 @@ public class Arista {
         this.activa = true;
     }
     
-    /*
-    obtiene la estacion de origen.
-    */
-    
+   /**
+     * Obtiene la estación de origen.
+     * @return Estación origen
+     */
     public Estacion getOrigen(){
         return origen;
     }
     
     /**
-     * obtiene la estacion destino.
+     * Obtiene la estación de destino.
+     * @return Estación destino
+     * 
      */
     
     public Estacion getDestino(){
@@ -52,6 +54,7 @@ public class Arista {
     }
     /**
      * obtiene el tiempo de translado.
+     * @return Tiempo en minutos
      */
     
     public double getTiempo(){
@@ -60,7 +63,7 @@ public class Arista {
     
     /**
      * verifica si la arista esta vacia.
-     * return true si esta vacia
+     * @return true si esta vacia
      */
     
     public boolean isActiva(){
@@ -69,7 +72,7 @@ public class Arista {
     
     /**
      * establece el estado de la arista.
-     * activa Nuevo estado.
+     * @param activa Nuevo estado.
      */
  
     public void setActiva(boolean activa){

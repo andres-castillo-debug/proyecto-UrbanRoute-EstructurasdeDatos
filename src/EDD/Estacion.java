@@ -5,6 +5,12 @@
 package EDD;
 
 /**
+ * Representa una estación de la red de transporte multimodal.
+ * Cada estación tiene un identificador único, nombre, línea, zona y capacidad.
+ */
+
+
+/**
  *
  * @author Andre
  */
@@ -21,6 +27,11 @@ public class Estacion {
     /**
      * Constructor de la clase Estacion.
      * 
+     * @param id Identificador único
+     * @param nombre Nombre de la estación
+     * @param linea Línea de transporte
+     * @param zona Zona geográfica
+     * @param capacidad Capacidad de pasajeros por hora 
      */
     public Estacion(String id, String nombre, String linea, String zona, int capacidad) {
         this.id = id;
@@ -34,6 +45,7 @@ public class Estacion {
     
     /**
      * Obtiene el identificador de la estación.
+     * @return ID de la estación
      */
     public String getId() { 
         return id; 
@@ -41,6 +53,7 @@ public class Estacion {
     
     /**
      * Obtiene el nombre de la estación.
+     * * @return Nombre de la estación
      */
     public String getNombre() { 
         return nombre; 
@@ -48,6 +61,7 @@ public class Estacion {
     
     /**
      * Obtiene la línea de transporte.
+     * @return Línea de la estación
      */
     public String getLinea() { 
         return linea; 
@@ -55,6 +69,7 @@ public class Estacion {
     
     /**
      * Obtiene la zona geográfica.
+     * @return Zona de la estación
      */
     public String getZona() { 
         return zona; 
@@ -62,6 +77,7 @@ public class Estacion {
     
     /**
      * Obtiene la capacidad de pasajeros.
+     * @return Capacidad por hora
      */
     public int getCapacidad() { 
         return capacidad; 
@@ -69,6 +85,7 @@ public class Estacion {
     
     /**
      * Obtiene la lista de aristas de la estación.
+     * * @return Lista de aristas
      */
     public Lista<Arista> getAristas() { 
         return aristas; 
@@ -76,6 +93,7 @@ public class Estacion {
     
     /**
      * Verifica si la estación está activa.
+     * @return true si está activa
      */
     public boolean isActiva() { 
         return activa; 
@@ -83,6 +101,7 @@ public class Estacion {
     
     /**
      * Establece el estado de la estación.
+     * @param activa Nuevo estado
      */
     public void setActiva(boolean activa) { 
         this.activa = activa; 
@@ -90,6 +109,7 @@ public class Estacion {
     
     /**
      * Agrega una arista a la estación.
+     *  @param a Arista a agregar
      */
     public void agregarArista(Arista a) {
         if (!aristas.contiene(a)) aristas.agregar(a);
@@ -97,6 +117,7 @@ public class Estacion {
     
     /**
      * Elimina una arista de la estación.
+     * @param a Arista a eliminar
      */
     public void eliminarArista(Arista a) {
         aristas.eliminar(a);
@@ -104,6 +125,7 @@ public class Estacion {
     
     /**
      * Obtiene el grado de la estación (número de conexiones).
+     * @return Grado de la estación
      */
     public int getGrado() { 
         return aristas.getTamaño(); 
