@@ -573,6 +573,88 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             }
         }
     }
+
+    /**
+    * Maneja la acción de eliminar una estación.
+    * @param evt Evento de acción
+    */
+    private void btnEliminarEstacionActionPerformed(java.awt.event.ActionEvent evt) {                                                    
+        String sel = listaEstaciones.getSelectedValue();
+        if (sel == null) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Seleccione una estación");
+            return;
+        }
+        String id = sel.split(" - ")[0];
+
+        int c = javax.swing.JOptionPane.showConfirmDialog(this,
+            "¿Eliminar estación " + sel + "?\nSe eliminarán sus conexiones.",
+            "Confirmar", javax.swing.JOptionPane.YES_NO_OPTION);
+
+        if (c == javax.swing.JOptionPane.YES_OPTION) {
+            if (grafo.eliminarEstacion(id)) {
+                GestorArchivo.marcarCambios();
+                actualizarListaEstaciones();
+                actualizarCombos();
+                actualizarInfo();
+                txtResultados1.append("Estación eliminada: " + id + "\n");
+            }
+        }
+    }                                                   
+
+    /**
+    * Maneja la acción de agregar una conexión entre estaciones.
+    * @param evt Evento de acción
+    */
+    private void btnAgregarConexionActionPerformed(java.awt.event.ActionEvent evt) {                                                   
+        if (grafo.getNumEstaciones() < 2) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Se necesitan al menos 2 estaciones");
+            return;
+        }
+
+        EDD.Lista<EDD.Estacion> estaciones = grafo.getTodasEstaciones();
+        String[] ids = new String[estaciones.getTamaño()];
+        for (int i = 0; i < estaciones.getTamaño(); i++) {
+            ids[i] = estaciones.obtener(i).getId();
+        }
+
+        javax.swing.JComboBox<String> cboO = new javax.swing.JComboBox<>(ids);
+        javax.swing.JComboBox<String> cboD = new javax.swing.JComboBox<>(ids);
+        javax.swing.JTextField txtT = new javax.swing.JTextField("2");
+
+        javax.swing.JPanel panel = new javax.swing.JPanel(new java.awt.GridLayout(3, 2, 5, 5));
+        panel.add(new javax.swing.JLabel("Origen:"));
+        panel.add(cboO);
+        panel.add(new javax.swing.JLabel("Destino:"));
+        panel.add(cboD);
+        panel.add(new javax.swing.JLabel("Tiempo (min):"));
+        panel.add(txtT);
+
+        int r = javax.swing.JOptionPane.showConfirmDialog(this, panel, 
+            "Agregar Conexión", javax.swing.JOptionPane.OK_CANCEL_OPTION);
+
+        if (r == javax.swing.JOptionPane.OK_OPTION) {
+            try {
+                String o = (String) cboO.getSelectedItem();
+                String d = (String) cboD.getSelectedItem();
+                double t = Double.parseDouble(txtT.getText().trim());
+
+                if (o.equals(d)) {
+                    javax.swing.JOptionPane.showMessageDialog(this, "Origen y destino deben ser diferentes");
+                    return;
+                }
+
+                if (grafo.agregarArista(o, d, t)) {
+                    GestorArchivo.marcarCambios();
+                    actualizarInfo();
+                    txtResultados1.append("Conexión agregada: " + o + " - " + d + " (" + t + " min)\n");
+                } else {
+                    javax.swing.JOptionPane.showMessageDialog(this, "Ya existe esa conexión");
+                }
+            } catch (NumberFormatException e) {
+                javax.swing.JOptionPane.showMessageDialog(this, "Tiempo inválido");
+            }
+        }
+    }
                          
 
     /**
