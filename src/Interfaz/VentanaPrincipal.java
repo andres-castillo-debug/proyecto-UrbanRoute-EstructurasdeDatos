@@ -422,7 +422,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         lblStats.setText("Estaciones: " + grafo.getNumEstaciones() + 
                         " | Conexiones: " + grafo.getNumAristas());
     }
-
+    
     /**
     * Maneja la acción de cargar estaciones desde archivo.
     * @param evt Evento de acción
@@ -434,7 +434,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             actualizarInfo();
             txtResultados1.append("Estaciones cargadas.\n");
         }
-    }  
+    }                                                   
 
     /**
     * Maneja la acción de limpiar el área de resultados.
@@ -499,7 +499,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                 "\nAsegúrate de tener GraphStream en las librerías.", 
                 "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
         }
-    } 
+    }                                               
 
     /**
     * Maneja la acción de identificar hubs.
@@ -515,7 +515,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                 " (" + e.getGrado() + " conexiones, " + e.getLinea() + ")\n");
         }
         txtResultados1.append("\n");
-    }
+    }                                       
 
     /**
     * Maneja la acción de cargar conexiones desde archivo.
@@ -572,7 +572,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                 javax.swing.JOptionPane.showMessageDialog(this, "Capacidad inválida");
             }
         }
-    }
+    }                                                  
 
     /**
     * Maneja la acción de eliminar una estación.
@@ -654,8 +654,113 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                 javax.swing.JOptionPane.showMessageDialog(this, "Tiempo inválido");
             }
         }
-    }
-                         
+    }                                                  
+
+    /**
+    * Maneja la acción de eliminar una conexión.
+    * @param evt Evento de acción
+    */
+    private void btnEliminarConexionActionPerformed(java.awt.event.ActionEvent evt) {                                                    
+        if (grafo.getNumAristas() == 0) {
+            javax.swing.JOptionPane.showMessageDialog(this, "No hay conexiones");
+            return;
+        }
+
+        EDD.Lista<EDD.Arista> aristas = grafo.getAristas();
+        String[] ops = new String[aristas.getTamaño()];
+        for (int i = 0; i < aristas.getTamaño(); i++) {
+            EDD.Arista a = aristas.obtener(i);
+            ops[i] = a.getOrigen().getId() + " - " + a.getDestino().getId();
+        }
+
+        String sel = (String) javax.swing.JOptionPane.showInputDialog(this,
+            "Seleccione la conexión a eliminar:", "Eliminar Conexión",
+            javax.swing.JOptionPane.QUESTION_MESSAGE, null, ops, ops[0]);
+
+        if (sel != null) {
+            String[] p = sel.split(" - ");
+            if (grafo.eliminarArista(p[0], p[1])) {
+                GestorArchivo.marcarCambios();
+                actualizarInfo();
+                txtResultados1.append("Conexión eliminada: " + sel + "\n");
+            }
+        }
+    }                                                   
+
+    /**
+    * Maneja la acción de calcular la ruta más corta.
+    * @param evt Evento de acción
+    */
+    private void btnCalcularRutaActionPerformed(java.awt.event.ActionEvent evt) {                                                
+        String o = (String) cmbOrigen.getSelectedItem();
+        String d = (String) cmbDestino.getSelectedItem();
+
+        if (o == null || d == null) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Seleccione origen y destino");
+            return;
+        }
+        if (o.equals(d)) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Origen y destino deben ser diferentes");
+            return;
+        }
+
+        txtResultados1.append("\nRUTA MÁS CORTA\n");
+        txtResultados1.append("De: " + o + " a: " + d + "\n");
+
+        EDD.Grafo.ResultadoDijkstra res = grafo.rutaMasCorta(o, d);
+        if (res.hayRuta()) {
+            txtResultados1.append("Tiempo total: " + res.getDistancia() + " min\n");
+            txtResultados1.append("Ruta: ");
+            for (int i = 0; i < res.getRuta().getTamaño(); i++) {
+                if (i > 0) txtResultados1.append(" → ");
+                txtResultados1.append(res.getRuta().obtener(i).getId());
+            }
+            txtResultados1.append("\n\n");
+        } else {
+            txtResultados1.append("No hay ruta disponible\n\n");
+        }
+    }                                               
+
+    /**
+    * Maneja la acción de detectar subredes.
+    * @param evt Evento de acción
+    */
+    private void btnSubredesActionPerformed(java.awt.event.ActionEvent evt) {                                            
+        txtResultados1.append("\nSUBREDES / COMPONENTES CONEXOS\n");
+    
+        EDD.Lista<EDD.Lista<EDD.Estacion>> subredes = grafo.encontrarSubredes();
+        if (subredes.getTamaño() == 0) {
+            txtResultados1.append("No se encontraron subredes\n\n");
+        } else {
+            txtResultados1.append("Se encontraron " + subredes.getTamaño() + " subredes:\n\n");
+            for (int i = 0; i < subredes.getTamaño(); i++) {
+                EDD.Lista<EDD.Estacion> sr = subredes.obtener(i);
+                txtResultados1.append("Subred " + (i+1) + " (" + sr.getTamaño() + " estaciones):\n");
+                for (int j = 0; j < sr.getTamaño(); j++) {
+                    txtResultados1.append("  • " + sr.obtener(j).getId() + " - " + sr.obtener(j).getNombre() + "\n");
+                }
+                txtResultados1.append("\n");
+            }
+        }
+    }                                           
+
+    /**
+    * Maneja la acción de guardar estaciones.
+    * @param evt Evento de acción
+    */
+    private void btnGuardarEstacionesActionPerformed(java.awt.event.ActionEvent evt) {                                                     
+        GestorArchivo.guardarEstaciones(grafo, this);
+        actualizarInfo();
+    }                                                    
+
+    /**
+    * Maneja la acción de guardar conexiones.
+    * @param evt Evento de acción
+    */
+    private void btnGuardarConexionesActionPerformed(java.awt.event.ActionEvent evt) {                                                     
+        GestorArchivo.guardarConexiones(grafo, this);
+        actualizarInfo();
+    }                                                    
 
     /**
      * @param args the command line arguments
@@ -730,4 +835,5 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private javax.swing.JTextArea txtResultados1;
     // End of variables declaration                   
 }
+
 
