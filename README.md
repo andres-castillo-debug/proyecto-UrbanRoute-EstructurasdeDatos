@@ -1,7 +1,11 @@
 # Proyecto UrbanRoute
 Integrantes: 
 
-Jesús Schneider. CI: 29.625.956. Correo: jesus.schneider@correo.unimet.edu.ve
+Jesús Schneider. C.I: 29.625.956. Correo: jesus.schneider@correo.unimet.edu.ve
+
+Moisés Requena. C.I: 32.736.497. Correo: moisesreq@correo.unimet.edu.ve
+
+Andrés Castillo. C.I: 32.629.303. Correo: andres-castillo@correo.unimet.edu.ve
 
 Descrición:
 
